@@ -1,0 +1,18 @@
+<div class="wrapper">
+	<div ngx-masonry-layout [max-height]="250" [gutter]="15" style="display: table;"> 
+		<!-- way 1 --> 
+		<img *ngFor="let image of images;" src="/assets/img/{{image}}" style="width: 100%" />
+
+		<!-- way 2 -->
+		<img src="/assets/img/rasmus-hjortshoj-1.jpg" style="width: 100%" />
+		<img src="/assets/img/rasmus-hjortshoj-6.jpg" style="width: 100%" />
+
+		<!-- way 3 -->
+		<div>
+			<img src="/assets/img/rasmus-hjortshoj-9.jpg" style="width: 100%" />
+		</div>
+		<div>
+			<img src="/assets/img/rasmus-hjortshoj-2.jpg" style="width: 100%" />
+		</div>
+	</div>
+</div>
