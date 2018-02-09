@@ -1,97 +1,127 @@
-import { Directive, ElementRef, HostListener, Input, AfterViewInit } from '@angular/core';
+import { Directive, ElementRef, HostListener, HostBinding, Input, AfterViewInit } from '@angular/core';
 
 @Directive({
-    selector: '[ngx-masonry-layout]'
+    selector: '[masonry-layout]'
 })
 
-export class MasonryLayoutDirective {
+export class MasonryLayoutDirective { 
     GUTTER = 0;
 
-    @Input('max-height') MAX_HEIGHT = 400; 
+    @Input('max-height') MAX_HEIGHT = 250; 
 
     @Input('gutter')
     set gutter(value: any){
         this.GUTTER = value / 2;
     }
-
+ 
     nodes: any;
     elem: any;
     savedNodeDimensions: any = [];
     observer: any;
+    gridState: any = 'not started';
+    resizeTimer: any;
      
     constructor(private elementRef: ElementRef){
         this.elem = this.elementRef.nativeElement;
     }
 
+    @HostBinding('class.wrapper-show') wrapperShow: any = false;
+
     @HostListener('window:resize', ['$event'])
     onWindowResize(event) {
-        this.getRows(); 
+        clearTimeout(this.resizeTimer);
+
+        this.resizeTimer = setTimeout(() => {
+            this.gridState = 'not started';
+            this.hideNodes();
+            this.buildGrid(); 
+        }, 250);
     }
 
-    ngAfterViewInit() {
+    ngOnInit() {
+        this.hideWrapper();
+
+        this.nodes = this.getNodes();
+        this.saveNodesDimensions();
         this.hideNodes();
-        this.init();
 
         this.observer = new MutationObserver(mutations => {
-            this.init();
-            this.getRows();
+            this.nodes = this.getNodes();
+            this.saveNodesDimensions();
+            this.buildGrid();
         });
         let config = { childList: true };
         this.observer.observe(this.elem, config);
     }
 
-    init(){
-        this.nodes = this.getNodes();
-        this.saveNodesDimensions();
-    }
-
-    getRows(){
+    buildGrid(){
         let parentWidth = Math.floor(this.elem.parentNode.offsetWidth);
         let totalRowWidth: any = 0; 
-        let rows: any = {
-            start: 0,
-            length: 0
+        let row: any = {
+            startIndex: 0,
+            endIndex: 0,
+            length: 0,
+            totalWidth: 0
         };
 
         this.elem.style.width = parentWidth +'px';
-        this.setColStyles();
 
         this.nodes.some((node, index) => {
+            node.style.float = 'left';
 
-            if (totalRowWidth === 0){
-                rows.start = index;
-                rows.length = 0;
+            if (row.totalWidth === 0){
+                row.startIndex = index;
+                row.length = 0;
             }
 
-            rows.length++;
-            totalRowWidth += this.getComputedWidth(index);
+            row.length++;
+            row.totalWidth += this.getComputedWidth(index);
             
-            if (totalRowWidth >= parentWidth || this.isLastChild(index)){
-                rows.end = index;
-                let scaling = totalRowWidth/parentWidth;
+            if (row.totalWidth >= parentWidth || this.isLastChild(index)){
+                row.endIndex = index;
+                let scaling = row.totalWidth/parentWidth;
 
-                this.setColDimensions(scaling, rows);
-                totalRowWidth = 0; 
+                this.setColDimensions(scaling, row);
+                row.totalWidth = 0; 
             }
         });
     }
 
-    setColDimensions(scaling: any, rows: any){
+    setColDimensions(scaling: any, row: any){
         let totalRowWidth: any = 0;
         let parentWidth = this.elem.parentNode.offsetWidth;
+
         scaling = (scaling < 1) ? 1 : scaling;
 
+        if (this.nodes.length === 1){
+            this.showWrapper();
+        }
+
         this.nodes.some((node, index) => {
-            if (index >= rows.start && index <= rows.end){
+            node.style.display = 'block';
+
+            if (index >= row.startIndex && index <= row.endIndex){
                 let nodeWidth;
 
-                if (index === rows.end && scaling > 1){ 
+                if (index === row.endIndex && scaling > 1){ 
                     nodeWidth = (100 - totalRowWidth) - ((this.GUTTER * 2) / parentWidth * 100);
                     node.style.width = 'calc('+nodeWidth+'%)';
+                    
+                    if (this.gridState === 'not started'){
+                        this.gridState = 'pre-building';
 
-                    this.showNodes();
+                        setTimeout(() => {
+                            this.buildGrid();
+                        }, 100);
+                    }
+
+                    if (this.gridState === 'pre-building'){
+                        setTimeout(() => {
+                            this.showWrapper();
+                        }, 300);
+                    }
                 } else {
-                    nodeWidth = ((this.getComputedWidth(index) / scaling) / parentWidth * 100) - ((rows.length * (this.GUTTER * 2)) * (this.getComputedWidth(index) / scaling) / parentWidth) / parentWidth * 100;
+                    nodeWidth = ((this.getComputedWidth(index) / scaling) / parentWidth * 100) - ((row.length * (this.GUTTER * 2)) * (this.getComputedWidth(index) / scaling) / parentWidth) / parentWidth * 100;
                     node.style.width = 'calc('+nodeWidth+'%)';
                     
                     totalRowWidth += nodeWidth;
@@ -101,16 +131,10 @@ export class MasonryLayoutDirective {
                 node.style.margin = this.getNodeMargin(parentWidth);
                 node.style.height = '';
                 
-                if (rows.length > 1){
-                    node.style.height = this.nodes[rows.start].offsetHeight + 'px';
+                if (row.length > 1){
+                    node.style.height = this.nodes[row.startIndex].offsetHeight + 'px';
                 }
             }
-        });
-    }
-
-    setColStyles(){
-        this.nodes.some((node, index) => {
-            node.style.float = 'left';
         });
     }
 
@@ -137,7 +161,7 @@ export class MasonryLayoutDirective {
                     width = img.naturalWidth;
                     height = img.naturalHeight;
                     self.savedNodeDimensions[index] = Object.assign({}, { width, height });
-                    self.getRows();
+                    self.buildGrid();
                 }
             } else {
                 width = node.naturalWidth ? node.naturalWidth : node.offsetWidth;
@@ -147,7 +171,7 @@ export class MasonryLayoutDirective {
                     width = node.naturalWidth ? node.naturalWidth : node.offsetWidth;
                     height = node.naturalHeight ? node.naturalHeight : node.offsetHeight;
                     self.savedNodeDimensions[index] = Object.assign({}, { width, height });
-                    self.getRows();
+                    self.buildGrid();
                 }
             }
 
@@ -160,11 +184,21 @@ export class MasonryLayoutDirective {
     }
 
     hideNodes(){
-        this.elem.style.opacity = 0;
+        this.nodes.some((node, index) => {
+            node.style.display = 'none';
+        });
     }
 
-    showNodes(){
-        this.elem.style.opacity = 1;
+    hideWrapper(){
+        this.elem.style.position = 'absolute';
+        this.elem.style.height = '0';
+        this.elem.style.overflow = 'hidden';
+    }
+
+    showWrapper(){
+        this.elem.style.position = 'relative';
+        this.elem.style.height = 'auto';
+        this.elem.style.display = 'table';
     }
 
     getNodeMargin(parentWidth: any){

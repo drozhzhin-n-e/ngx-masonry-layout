@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
 	images: any = [
-		'virginie-khateeb-1.jpg', 
-		'virginie-khateeb-2.jpg'
+		'yi-sung-tsai-01.jpg', 
+		'yi-sung-tsai-02.jpg'
 	];
 }

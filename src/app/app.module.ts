@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { MasonryLayoutDirective } from './masonry-layout.directive';
+//import { MasonryLayoutDirective } from 'ngx-masonry-layout/components';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,6 @@ import { MasonryLayoutDirective } from './masonry-layout.directive';
     HttpModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent] 
 })
 export class AppModule { }

@@ -17,12 +17,12 @@ Import module:
 ## Usage
     
 	<div 
-		ngx-masonry-layout 
-		[max-height]="400" 
+		masonry-layout 
+		[max-height]="250" 
 		[gutter]="10"
 	>
-		<img src="/assets/virginie-khateeb.jpg" />
-		<img src="/assets/rasmus-hjortshoj.jpg" />
+		<img src="path_to_image" />
+		<img src="path_to_image" />
 	</div>
 
 ## Properties
@@ -30,7 +30,7 @@ Import module:
 | name             | type                                | description                                       |
 |------------------|-------------------------------------|---------------------------------------------------|
 | max-height       | number                              | Maximum row height.                               |
-| gutter           | number                              | 	Adds space between item elements.                |
+| gutter           | number                              | Adds space between item elements.                |
 
 ## Demo
 http://crystalui.org/components/masonry-layout
