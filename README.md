@@ -1,4 +1,6 @@
-AngularX masonry layout component.
+## Demo
+
+http://crystalui.org/components/masonry-layout
 
 ## Installation
 
@@ -8,29 +10,32 @@ Install the npm package.
         
 Import module:
 
-    import { MasonryLayoutDirective } from 'ngx-masonry-layout/components';
-     
-    @NgModule({
-        declarations: [ MasonryLayoutDirective ]
-    })
+    import { MasonryLayoutComponent } from 'ngx-masonry-layout/components';
+ 
+	@NgModule({
+	    declarations: [ MasonryLayoutComponent ]
+	})
 
 ## Usage
     
-	<div 
-		masonry-layout 
-		[max-height]="250" 
-		[gutter]="10"
-	>
-		<img src="path_to_image" />
-		<img src="path_to_image" />
-	</div>
+	myImages = [
+		{
+			path: 'path_to_image',
+			width: natural_width,
+			height: natural_height
+		}
+	];
+
+	<masonry-layout 
+	[max-height]="250"
+	[gutter]="4" 
+	[images]="myImages"
+	(events)="handleMasonryLayoutEvents($event)"></masonry-layout>
 
 ## Properties
 
-| name             | type                                | description                                       |
-|------------------|-------------------------------------|---------------------------------------------------|
-| max-height       | number                              | Maximum row height.                               |
-| gutter           | number                              | Adds space between item elements.                |
-
-## Demo
-http://crystalui.org/components/masonry-layout
+| name             | type                                | description                                                               |
+|------------------|-------------------------------------|---------------------------------------------------------------------------|
+| max-height       | number                              | Maximum row height.                                                       |
+| gutter           | number                              | Adds space between item elements (it is recommended to use even numbers). |
+| class-name       | string or array                     | Adds classes for each item.                                               |

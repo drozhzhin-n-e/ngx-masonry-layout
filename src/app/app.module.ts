@@ -4,13 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { MasonryLayoutDirective } from './masonry-layout.directive';
-//import { MasonryLayoutDirective } from 'ngx-masonry-layout/components';
+import { MasonryLayoutComponent } from './masonry-layout/masonry-layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MasonryLayoutDirective
+    MasonryLayoutComponent
   ],
   imports: [ 
     BrowserModule,

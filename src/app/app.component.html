@@ -1,22 +1,13 @@
-<div class="wrapper">
-	<div 
-		masonry-layout 
-		[max-height]="150" 
-		[gutter]="5"> 
-		<!-- way 1 --> 
-		<img *ngFor="let image of images;" src="/assets/img/{{image}}" style="width: 100%" />
-
-		<!-- way 2 -->
-		<img src="/assets/img/yi-sung-tsai-03.jpg" style="width: 100%" />
-		<img src="/assets/img/yi-sung-tsai-08.jpg" style="width: 100%" />
-		<img src="/assets/img/yi-sung-tsai-04.jpg" style="width: 100%" />
-
-		<!-- way 3 -->
-		<div>
-			<img src="/assets/img/yi-sung-tsai-05.jpg" style="width: 100%" />
-		</div>
-		<div>
-			<img src="/assets/img/yi-sung-tsai-06.jpg" style="width: 100%" />
-		</div>
+<div>
+	<div class="actions">
+		<label>max-height <input type="number" size="35" [(ngModel)]="masonryMaxHeight"></label>
+		<label>gutter <input type="number" [(ngModel)]="masonryGutter"></label>
 	</div>
+
+	<masonry-layout 
+		[max-height]="masonryMaxHeight"
+		[gutter]="masonryGutter" 
+		[images]="myImages"
+		[class-name]="['item', 'masonry-layout-item']"
+		(events)="handleMasonryLayoutEvents($event)"></masonry-layout> 
 </div>
