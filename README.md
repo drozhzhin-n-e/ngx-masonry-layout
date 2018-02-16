@@ -27,10 +27,10 @@ Import module:
 	];
 
 	<masonry-layout 
-	[max-height]="250"
-	[gutter]="4" 
-	[images]="myImages"
-	(events)="handleMasonryLayoutEvents($event)"></masonry-layout>
+		[max-height]="250"
+		[gutter]="4" 
+		[images]="myImages"
+		(events)="handleMasonryLayoutEvents($event)"></masonry-layout>
 
 ## Properties
 
