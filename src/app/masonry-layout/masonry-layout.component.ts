@@ -166,4 +166,8 @@ export class MasonryLayoutComponent {
             index: i
         });
     }
+
+    onImageLoaded(elem){
+        elem.style.opacity = 1;
+    }
 }
