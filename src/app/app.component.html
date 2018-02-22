@@ -1,7 +1,11 @@
 <div>
 	<div class="actions">
-		<label>max-height <input type="number" size="35" [(ngModel)]="masonryMaxHeight"></label>
-		<label>gutter <input type="number" [(ngModel)]="masonryGutter"></label>
+		<div class="option">
+			<label>max-height: <input type="number" size="35" [(ngModel)]="masonryMaxHeight"></label>
+		</div>
+		<div class="option">
+			<label>gutter: <input type="number" [(ngModel)]="masonryGutter"></label>
+		</div>
 	</div>
 
 	<masonry-layout 
