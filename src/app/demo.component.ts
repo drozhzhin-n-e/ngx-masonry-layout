@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './demo.component.html',
+  styleUrls: ['./demo.component.css']
 })
-export class AppComponent {
+export class DemoComponent {
 
 	masonryMaxHeight = 250;
 	masonryGutter = 4;

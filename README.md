@@ -39,3 +39,9 @@ Import module:
 | max-height       | number                              | Maximum row height.                                                       |
 | gutter           | number                              | Adds space between item elements (it is recommended to use even numbers). |
 | class-name       | string or array                     | Adds classes for each item.                                               |
+
+## Sponsors
+
+We use Browserstack for cross-browser testing.
+
+[![Browserstack](http://crystalui.org/assets/img/browserstack-logo.png)](http://browserstack.com/)
