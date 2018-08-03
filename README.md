@@ -44,4 +44,8 @@ Import module:
 
 We use Browserstack for cross-browser testing.
 
+<<<<<<< HEAD
 [![Browserstack](http://crystalui.org/assets/img/browserstack-logo.png)](http://browserstack.com/)
+=======
+[![Browserstack](http://crystalui.org/assets/img/browserstack-logo.png)](http://browserstack.com/)
+>>>>>>> 7f2c06b84d410cbc11952aeb9596cb1c5bb944ef
